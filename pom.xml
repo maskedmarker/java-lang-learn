@@ -12,6 +12,7 @@
         <module>java-io-network</module>
         <module>java-collection</module>
         <module>java-lang-spec</module>
+        <module>java-text-format</module>
     </modules>
     <packaging>pom</packaging>
 

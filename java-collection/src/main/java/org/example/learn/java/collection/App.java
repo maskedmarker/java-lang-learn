@@ -1,4 +1,4 @@
-package org.example.learn.java;
+package org.example.learn.java.collection;
 
 /**
  * Hello world!

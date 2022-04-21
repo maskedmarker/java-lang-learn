@@ -1,4 +1,4 @@
-package org.example.learn.java;
+package org.example.learn.java.io.network;
 
 import static org.junit.Assert.assertTrue;
 

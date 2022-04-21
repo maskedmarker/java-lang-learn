@@ -11,3 +11,5 @@
   - 关于Java标准库集合的一些练习
 - java-lang-spec
     - 关于Java语言本身规范的一些练习
+- java-text-format
+  - 关于Java标准库提供的文本格式化的一些练习
