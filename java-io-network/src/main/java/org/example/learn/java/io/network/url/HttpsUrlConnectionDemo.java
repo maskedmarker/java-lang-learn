@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * In general, creating a connection to a URL is a multistep process
+ * HttpsUrlConnection的一般使用操作步骤
  */
 public class HttpsUrlConnectionDemo {
     public static void main(String[] args) {
