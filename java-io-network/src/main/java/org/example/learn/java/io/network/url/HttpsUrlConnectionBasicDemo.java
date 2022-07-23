@@ -16,55 +16,39 @@ public class HttpsUrlConnectionBasicDemo {
     public static void main(String[] args) {
         String httpsUrl = "https://www.baidu.com";
         HttpsUrlConnectionBasicDemo demo = new HttpsUrlConnectionBasicDemo();
-        demo.doGetMethod(httpsUrl);
-        demo.doPostMethod(httpsUrl);
+        demo.doRequest(httpsUrl, null);
+        demo.doRequest(httpsUrl, "POST");
     }
 
     /**
-     * HttpsURLConnection类默认使用http的get方法
+     * HttpsURLConnection类默认使用http的get方法,post方法需要显式声明
      * @param httpsUrl https的url
      */
-    public void doGetMethod(String httpsUrl) {
-        URLConnection urlConnection;
-        BufferedReader bufferedReader = null;
+    public void doRequest(String httpsUrl, String method) {
+        URLConnection urlConnection = null;
         try {
             URL url = new URL(httpsUrl);
 
-            // The connection object is created by invoking the openConnection method on a URL.
-            // It should be noted that a URLConnection instance does not establish the actual network connection on creation
             urlConnection = url.openConnection(); // 只是创建URLConnection对象
-            Class<? extends URLConnection> urlConnectionClass = urlConnection.getClass();
-            System.out.println("urlConnectionClass = " + urlConnectionClass);
-
-            //The setup parameters and general request properties are manipulated.
-            urlConnection.setDoInput(true);
-            urlConnection.setDoOutput(true);
-            urlConnection.setUseCaches(false);
-            urlConnection.setIfModifiedSince(1000 * 60);
-            // for example: if used in an applet and a URL request is made that requires a username/password this signifies that the system GUI to ask the user for input can be called
-            urlConnection.setAllowUserInteraction(false); // 比如要用户输入密码,操作系统会提示
-
-            //The actual connection to the remote object is made, using the connect method.
-            urlConnection.connect();
-
-            //The remote object becomes available. The header fields and the contents of the remote object can be accessed.
-            InputStream inputStream = urlConnection.getInputStream();
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-            String readContent;
-            while ((readContent = bufferedReader.readLine()) != null) {
-                System.out.print(readContent);
+            HttpsURLConnection httpsUrlConnection = (HttpsURLConnection) urlConnection;
+            if (method != null) {
+                httpsUrlConnection.setRequestMethod(method);
             }
 
-            System.out.println("------------------------------");
-            HttpsURLConnection httpsUrlConnection = (HttpsURLConnection) urlConnection;
-            String requestMethod = httpsUrlConnection.getRequestMethod(); // 默认使用的是GET方法
-            System.out.println("requestMethod = " + requestMethod);
+            manipulateSetupParameters(httpsUrlConnection);
+            manipulateRequestProperties(httpsUrlConnection);
+
+            // connect()方法调用返回时,已经创建了与server的tcp连接,此时并没有将http协议的request发送给server
+            urlConnection.connect();
+
+            // 当getInputStream()方法调用返回时,才会将http request的header和body发送给server
+            accessRemoteObject(httpsUrlConnection);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (bufferedReader != null) {
+            if (urlConnection != null) {
                 try {
-                    bufferedReader.close();
+                    urlConnection.getOutputStream().close();
                 } catch (IOException e) {
                     // ignore
                 }
@@ -72,56 +56,35 @@ public class HttpsUrlConnectionBasicDemo {
         }
     }
 
-    /**
-     * HttpsURLConnection类默认使用http的get方法,需要显式地声明post方法
-     * @param httpsUrl https的url
-     */
-    public void doPostMethod(String httpsUrl) {
-        URLConnection urlConnection;
-        BufferedReader bufferedReader = null;
-        try {
-            URL url = new URL(httpsUrl);
+    // connection相关参数
+    private void manipulateSetupParameters(HttpsURLConnection urlConnection) {
+        urlConnection.setConnectTimeout(1000);
+        urlConnection.setReadTimeout(2000);
+        urlConnection.setDoInput(true);
+        urlConnection.setDoOutput(true);
 
-            // The connection object is created by invoking the openConnection method on a URL.
-            // It should be noted that a URLConnection instance does not establish the actual network connection on creation
-            urlConnection = url.openConnection(); // 只是创建URLConnection对象
-            Class<? extends URLConnection> urlConnectionClass = urlConnection.getClass();
-            System.out.println("urlConnectionClass = " + urlConnectionClass);
-            HttpsURLConnection httpsUrlConnection = (HttpsURLConnection) urlConnection;
-            httpsUrlConnection.setRequestMethod("POST");
+        urlConnection.setAllowUserInteraction(false); // 比如要用户输入密码,操作系统会提示
+    }
 
-            //The setup parameters and general request properties are manipulated.
-            urlConnection.setDoInput(true);
-            urlConnection.setDoOutput(true);
-            urlConnection.setUseCaches(false);
-            urlConnection.setIfModifiedSince(1000 * 60);
-            // for example: if used in an applet and a URL request is made that requires a username/password this signifies that the system GUI to ask the user for input can be called
-            urlConnection.setAllowUserInteraction(false); // 比如要用户输入密码,操作系统会提示
+    // request相关参数
+    private void manipulateRequestProperties(HttpsURLConnection urlConnection) {
+        urlConnection.setUseCaches(false);
+        urlConnection.setIfModifiedSince(1000 * 60);
+        urlConnection.addRequestProperty("Accept", "text/*");
+    }
 
-            //The actual connection to the remote object is made, using the connect method.
-            urlConnection.connect();
+    private void accessRemoteObject(HttpsURLConnection httpsUrlConnection) throws IOException {
+        // 当getInputStream()方法调用返回时,才会将http request的header和body发送给server
+        InputStream inputStream = httpsUrlConnection.getInputStream();
 
-            //The remote object becomes available. The header fields and the contents of the remote object can be accessed.
-            InputStream inputStream = urlConnection.getInputStream();
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-            String readContent;
-            while ((readContent = bufferedReader.readLine()) != null) {
-                System.out.print(readContent);
-            }
-
-            System.out.println("------------------------------");
-            String requestMethod = httpsUrlConnection.getRequestMethod(); // 默认使用的是GET方法
-            System.out.println("requestMethod = " + requestMethod);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8)); //写死编码
+        String readContent;
+        while ((readContent = bufferedReader.readLine()) != null) {
+            System.out.print(readContent);
         }
+
+        System.out.println();
+        String requestMethod = httpsUrlConnection.getRequestMethod(); // 默认使用的是GET方法
+        System.out.println("requestMethod = " + requestMethod);
     }
 }
