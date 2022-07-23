@@ -9,20 +9,22 @@ import java.nio.charset.StandardCharsets;
 /**
  * In general, creating a connection to a URL is a multistep process
  * HttpsUrlConnection的一般使用操作步骤
+ * stackoverflow有个关于HttpsUrlConnection的非常好的问答,包含了多次请求中cookie的处理,建议参考学习
+ * https://stackoverflow.com/questions/2793150/how-to-use-java-net-urlconnection-to-fire-and-handle-http-requests/2793153#2793153
  */
-public class HttpsUrlConnectionDemo {
+public class HttpsUrlConnectionBasicDemo {
     public static void main(String[] args) {
         String httpsUrl = "https://www.baidu.com";
-        HttpsUrlConnectionDemo demo = new HttpsUrlConnectionDemo();
-        demo.getMethod(httpsUrl);
-        demo.postMethod(httpsUrl);
+        HttpsUrlConnectionBasicDemo demo = new HttpsUrlConnectionBasicDemo();
+        demo.doGetMethod(httpsUrl);
+        demo.doPostMethod(httpsUrl);
     }
 
     /**
      * HttpsURLConnection类默认使用http的get方法
      * @param httpsUrl https的url
      */
-    public void getMethod(String httpsUrl) {
+    public void doGetMethod(String httpsUrl) {
         URLConnection urlConnection;
         BufferedReader bufferedReader = null;
         try {
@@ -74,7 +76,7 @@ public class HttpsUrlConnectionDemo {
      * HttpsURLConnection类默认使用http的get方法,需要显式地声明post方法
      * @param httpsUrl https的url
      */
-    public void postMethod(String httpsUrl) {
+    public void doPostMethod(String httpsUrl) {
         URLConnection urlConnection;
         BufferedReader bufferedReader = null;
         try {
