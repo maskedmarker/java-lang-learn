@@ -74,7 +74,7 @@ public class UrlConnectionDemo {
     private void accessRemoteObject(URLConnection urlConnection) throws IOException {
         BufferedReader bufferedReader;
         InputStream inputStream = urlConnection.getInputStream();
-        bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream), StandardCharsets.UTF_8));
+        bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         String readContent;
         while ((readContent = bufferedReader.readLine()) != null) {
             System.out.print(readContent);

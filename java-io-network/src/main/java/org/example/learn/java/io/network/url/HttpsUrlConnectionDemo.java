@@ -47,7 +47,7 @@ public class HttpsUrlConnectionDemo {
 
             //The remote object becomes available. The header fields and the contents of the remote object can be accessed.
             InputStream inputStream = urlConnection.getInputStream();
-            bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream), StandardCharsets.UTF_8));
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             String readContent;
             while ((readContent = bufferedReader.readLine()) != null) {
                 System.out.print(readContent);
@@ -101,7 +101,7 @@ public class HttpsUrlConnectionDemo {
 
             //The remote object becomes available. The header fields and the contents of the remote object can be accessed.
             InputStream inputStream = urlConnection.getInputStream();
-            bufferedReader = new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream), StandardCharsets.UTF_8));
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             String readContent;
             while ((readContent = bufferedReader.readLine()) != null) {
                 System.out.print(readContent);
