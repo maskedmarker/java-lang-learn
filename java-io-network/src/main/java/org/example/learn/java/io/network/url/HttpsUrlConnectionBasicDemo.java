@@ -28,12 +28,11 @@ public class HttpsUrlConnectionBasicDemo {
      * @param httpsUrl https的url
      */
     public void doRequest(String httpsUrl, String method) {
-        URLConnection urlConnection = null;
+        HttpsURLConnection httpsUrlConnection = null;
         try {
             URL url = new URL(httpsUrl);
 
-            urlConnection = url.openConnection(); // 只是创建URLConnection对象
-            HttpsURLConnection httpsUrlConnection = (HttpsURLConnection) urlConnection;
+            httpsUrlConnection = (HttpsURLConnection) url.openConnection(); // 只是创建URLConnection对象
             if (method != null) {
                 httpsUrlConnection.setRequestMethod(method);
             }
@@ -42,16 +41,16 @@ public class HttpsUrlConnectionBasicDemo {
             manipulateRequestProperties(httpsUrlConnection);
 
             // connect()方法调用返回时,已经创建了与server的tcp连接,此时并没有将http协议的request发送给server
-            urlConnection.connect();
+            httpsUrlConnection.connect();
 
             // 当getInputStream()方法调用返回时,才会将http request的header和body发送给server
             accessRemoteObject(httpsUrlConnection);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (urlConnection != null) {
+            if (httpsUrlConnection != null) {
                 try {
-                    urlConnection.getOutputStream().close();
+                    httpsUrlConnection.getOutputStream().close();
                 } catch (IOException e) {
                     // ignore
                 }
