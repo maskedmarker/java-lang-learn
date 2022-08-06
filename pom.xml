@@ -8,10 +8,10 @@
     <artifactId>java-lang-learn-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
+        <module>java-lang-spec</module>
         <module>java-io-file</module>
         <module>java-io-network</module>
         <module>java-collection</module>
-        <module>java-lang-spec</module>
         <module>java-text-format</module>
     </modules>
     <packaging>pom</packaging>
