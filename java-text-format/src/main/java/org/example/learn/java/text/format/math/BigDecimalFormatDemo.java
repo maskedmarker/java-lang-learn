@@ -8,6 +8,8 @@ import java.math.BigDecimal;
  * Float.toString会使用科学计数法来表示文本内容
  * BigDecimal.toString在必要的时候,也会使用科学计数法表示
  * BigDecimal.toPlainString永远不会使用科学计数法表示
+ *
+ * @author cjh
  */
 public class BigDecimalFormatDemo {
     public static void main(String[] args) {
@@ -19,7 +21,8 @@ public class BigDecimalFormatDemo {
 
         f = 100000000000F;
         System.out.println("f = " + Float.toString(f));
-        bigDecimal = new BigDecimal(100000000000000000000D); // 不用字符串
+        // 不用字符串
+        bigDecimal = new BigDecimal(100000000000000000000D);
         System.out.println("bigDecimal = " + bigDecimal.toString());
 
         bigDecimal = new BigDecimal("100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
