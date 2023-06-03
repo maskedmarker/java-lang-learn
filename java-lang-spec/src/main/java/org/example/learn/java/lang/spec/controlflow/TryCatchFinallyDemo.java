@@ -26,7 +26,7 @@ public class TryCatchFinallyDemo {
 
 /*
 
-return result对应2个字节码(aload_2/areturn),即aload_n将要放回的值放到方法栈顶,areturn将栈顶值返回给调用方
+return result对应2个阶段(astore_2+aload_2/areturn),即astore_n+aload_n将要返回的值放到方法栈顶,areturn将栈顶值返回给调用方
 javac编译后的字节码文件中没有java文件的第15行,3个return公用一个areturn,该areturn在字节码最后
 
     Code:
@@ -61,7 +61,7 @@ javac编译后的字节码文件中没有java文件的第15行,3个return公用�
         35: areturn
       Exception table:
          from    to  target type
-             2    12    17   Class java/lang/Exception
+             2    12    17   Class java/lang/Exception   (from-to-target用的都是源码行号,非字节码执行序号)
              2    12    29   any
             17    24    29   any
             29    31    29   any
