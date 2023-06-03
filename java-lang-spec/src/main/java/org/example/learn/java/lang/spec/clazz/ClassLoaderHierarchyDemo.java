@@ -16,10 +16,10 @@ package org.example.learn.java.lang.spec.clazz;
 public class ClassLoaderHierarchyDemo {
 
     /**
-     *                               null(BootstrapClassLoader)
-     *                              -|
-     *                 ExtClassLoader
-     * AppClassLoader -|
+     *                                              null(BootstrapClassLoader)
+     *                                             -|
+     *                                ExtClassLoader
+     * AppClassLoader(即SystemClassLoader) -|
      */
     public void displayBuiltInClassLoaders() {
         ClassLoader classLoader = this.getClass().getClassLoader();
