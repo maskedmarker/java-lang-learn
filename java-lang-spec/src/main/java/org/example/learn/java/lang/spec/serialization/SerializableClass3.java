@@ -8,8 +8,7 @@ import java.io.*;
  * 被序列化的类
  * <p>
  * note: 通过反序列化来实例化对象的时候,
- * 1. 对象实例不通过构造函数
- * 2. 字段赋值也不通过setter方法
+ * 对于实现了Externalizable接口的类,在反序列化时,直接使用该类的无参构造函数来实现在heap上创建实例,并触发<init>方法的赋值
  */
 public class SerializableClass3 implements Externalizable {
 
@@ -52,6 +51,7 @@ public class SerializableClass3 implements Externalizable {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         System.out.println(" 调用 readExternal() !!!");
+        // 该实例的字段已经初始化
         id = in.readInt();
         name = (String) in.readObject();
         serialTimeMillis = in.readLong();

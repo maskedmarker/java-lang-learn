@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 被序列化的类
  * <p>
  * note: 通过反序列化来实例化对象的时候,
- * 1. 对象实例不通过构造函数
+ * 1. 对象实例不通过构造函数,且不调用无参构造函数
  * 2. 字段赋值也不通过setter方法
  */
 public class SerializableClass1 implements Serializable {
