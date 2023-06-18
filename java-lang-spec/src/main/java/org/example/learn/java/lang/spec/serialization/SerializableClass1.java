@@ -11,15 +11,15 @@ import java.io.Serializable;
  * 1. 对象实例不通过构造函数
  * 2. 字段赋值也不通过setter方法
  */
-public class SerializationPerson1 implements Serializable {
+public class SerializableClass1 implements Serializable {
 
     private static final long serialVersionUID = 3408169507716120674L;
 
     private int id;
     private String name;
 
-    public SerializationPerson1() {
-        System.out.println(SerializationPerson1.class.getSimpleName() + " is instantiating");
+    public SerializableClass1() {
+        System.out.println(SerializableClass1.class.getSimpleName() + " is instantiating");
     }
 
     public int getId() {

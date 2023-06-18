@@ -2,7 +2,10 @@ package org.example.learn.java.lang.spec.serialization;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * 被序列化的类
@@ -11,7 +14,7 @@ import java.io.*;
  * 1. 对象实例不通过构造函数
  * 2. 字段赋值也不通过setter方法
  */
-public class SerializationPerson3 implements Externalizable {
+public class SerializableClass2 implements Serializable {
 
     private static final long serialVersionUID = 3408169507716120674L;
 
@@ -20,8 +23,8 @@ public class SerializationPerson3 implements Externalizable {
     // 序列化时间戳
     private long serialTimeMillis = -1;
 
-    public SerializationPerson3() {
-        System.out.println(SerializationPerson3.class.getSimpleName() + " is instantiating");
+    public SerializableClass2() {
+        System.out.println(SerializableClass2.class.getSimpleName() + " is instantiating");
     }
 
     public int getId() {
@@ -49,17 +52,15 @@ public class SerializationPerson3 implements Externalizable {
                 .toString();
     }
 
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        System.out.println(" 调用 readExternal() !!!");
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
+        System.out.println(" 调用 readObject() !!!");
         id = in.readInt();
         name = (String) in.readObject();
         serialTimeMillis = in.readLong();
     }
 
-    @Override
-    public void writeExternal(ObjectOutput out) throws IOException {
-        System.out.println(" 调用 writeExternal() !!!");
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        System.out.println(" 调用 writeObject() !!!");
         out.writeInt(id);
         out.writeObject(name);
         out.writeLong(System.currentTimeMillis());
