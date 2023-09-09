@@ -2,52 +2,69 @@ package org.example.learn.java.io.network.socket.nio;
 
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.Iterator;
+import java.util.Set;
 
 public class NioServerTest {
 
-    //static ServerSocket variable
-    private static ServerSocket server;
-    //socket server port on which it will listen
-    private static int port = 9876;
-
     @Test
-    public void test0() throws IOException, ClassNotFoundException {
-        //create the socket server object
-        server = new ServerSocket(port);
+    public void test0() throws IOException {
+        //define an assign a selector
+        Selector selector = Selector.open();
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        //specify the port and host to connect to
+        InetSocketAddress serverSocketAddr = new InetSocketAddress("localhost", 1111);
+        serverSocketChannel.bind(serverSocketAddr);
+        //to set our server as non-blocking.
+        serverSocketChannel.configureBlocking(false);
 
-        //keep listens indefinitely until receives 'exit' call or program terminates
         while (true) {
-            System.out.println("Waiting for the client request");
-            //creating socket and waiting for client connection
-            Socket socket = server.accept();
+            System.out.println("I'm a server and I'm waiting for new connection and buffer select...");
+            selector.select();
 
-            //read from socket to ObjectInputStream object
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            //convert ObjectInputStream object to String
-            String message = (String) ois.readObject();
-            System.out.println("Message Received: " + message);
-            //create ObjectOutputStream object
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            //write object to Socket
-            oos.writeObject("Hi Client " + message);
-            //close resources
-            ois.close();
-            oos.close();
-            socket.close();
+            //define a set of selectable keys
+            Set<SelectionKey> selKeys = selector.selectedKeys();
+            Iterator<SelectionKey> keyIterator = selKeys.iterator();
 
-            //terminate the server if client sends exit request
-            if (message.equalsIgnoreCase("exit")) {
-                break;
+            //iterate over the selected keys
+            while (keyIterator.hasNext()) {
+                SelectionKey myKey = keyIterator.next();
+
+                /*if both the server and the client have binded to a port and
+                both are ready to share data with one another isAcceptable()
+                will return true */
+
+                if (myKey.isAcceptable()) {
+                    SocketChannel socketChannel = serverSocketChannel.accept();
+                    socketChannel.configureBlocking(false);
+                    socketChannel.register(selector, SelectionKey.OP_READ);
+                    System.out.println("Connection Accepted: " + socketChannel.getLocalAddress() + "\n");
+                } else if (myKey.isReadable()) {
+                    SocketChannel socketChannel = (SocketChannel) myKey.channel();
+                    ByteBuffer rcvBuffer = ByteBuffer.allocate(1024);
+                    socketChannel.read(rcvBuffer);
+                    InputStream in = new ByteArrayInputStream(rcvBuffer.array());
+                    //do something with your data
+                    //send ACK
+
+                    byte[] ackByte = "bye bye".getBytes();
+                    ByteBuffer sendBuffer = ByteBuffer.wrap(ackByte);
+                    socketChannel.write(sendBuffer);
+
+                }
             }
-        }
 
-        System.out.println("Shutting down Socket server!!");
-        //close the ServerSocket object
-        server.close();
+            //once read, each key is removed from the operation.
+            keyIterator.remove();
+        }
     }
 }

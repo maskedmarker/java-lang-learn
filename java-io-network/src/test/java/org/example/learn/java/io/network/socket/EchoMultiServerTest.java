@@ -1,5 +1,6 @@
 package org.example.learn.java.io.network.socket;
 
+import org.example.learn.java.io.network.socket.bio.BioEchoClient;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ public class EchoMultiServerTest {
 
     @Test
     public void givenClient1_whenServerResponds_thenCorrect() throws IOException {
-        EchoClient client1 = new EchoClient();
+        BioEchoClient client1 = new BioEchoClient();
         client1.startConnection("127.0.0.1", 5555);
         String msg1 = client1.sendMessage("hello");
         String msg2 = client1.sendMessage("world");
@@ -25,7 +26,7 @@ public class EchoMultiServerTest {
 
     @Test
     public void givenClient2_whenServerResponds_thenCorrect() throws IOException {
-        EchoClient client2 = new EchoClient();
+        BioEchoClient client2 = new BioEchoClient();
         client2.startConnection("127.0.0.1", 5555);
         String msg1 = client2.sendMessage("hello");
         String msg2 = client2.sendMessage("world");

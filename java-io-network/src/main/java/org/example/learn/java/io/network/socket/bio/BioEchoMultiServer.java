@@ -1,4 +1,4 @@
-package org.example.learn.java.io.network.socket;
+package org.example.learn.java.io.network.socket.bio;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class EchoMultiServer {
+public class BioEchoMultiServer {
     private ServerSocket serverSocket;
 
     public void start(int port) throws IOException {
@@ -66,7 +66,7 @@ public class EchoMultiServer {
     }
 
     public static void main(String[] args) throws IOException {
-        EchoMultiServer multiServer = new EchoMultiServer();
+        BioEchoMultiServer multiServer = new BioEchoMultiServer();
         multiServer.start(5555);
     }
 }

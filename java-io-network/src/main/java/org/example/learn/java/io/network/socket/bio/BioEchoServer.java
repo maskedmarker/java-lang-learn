@@ -1,4 +1,4 @@
-package org.example.learn.java.io.network.socket;
+package org.example.learn.java.io.network.socket.bio;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class EchoServer {
+public class BioEchoServer {
 
     private ServerSocket serverSocket;
     private Socket clientSocket;
@@ -44,7 +44,7 @@ public class EchoServer {
     }
 
     public static void main(String[] args) throws IOException {
-        EchoServer echoServer = new EchoServer();
+        BioEchoServer echoServer = new BioEchoServer();
         echoServer.start(4444);
     }
 }

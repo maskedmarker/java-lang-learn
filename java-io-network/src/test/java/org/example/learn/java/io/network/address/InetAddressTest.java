@@ -33,4 +33,11 @@ public class InetAddressTest {
         String canonicalHostName = inetAddress.getCanonicalHostName();
         System.out.println("canonicalHostName = " + canonicalHostName);
     }
+
+    @Test
+    public void test1() throws UnknownHostException {
+        InetAddress localHost = InetAddress.getLocalHost();
+        System.out.println("localHost = " + localHost);
+        System.out.println("localHost.getHostAddress() = " + localHost.getHostAddress());
+    }
 }
