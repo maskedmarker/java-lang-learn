@@ -3,9 +3,9 @@ package org.example.learn.java.lang.spec.math;
 import org.junit.Test;
 
 /**
- * java中位运算
+ * 位运算符
  */
-public class BitOperationTest {
+public class BitOperatorTest {
 
     /**
      * Integer.highestOneBit返回值的二进制表示中至多一直一个1,其他都是0,且1必须在最左侧
