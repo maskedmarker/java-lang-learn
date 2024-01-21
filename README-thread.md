@@ -54,7 +54,6 @@ result – the result to return on successful completion. If you don't need a pa
 3.如果任务线程已经开始执行任务,标记任务线程为interrupt状态.(至于任务线程对于interrupt标记怎么处理,就任务线程来决定.通常情况下,线程是要处理中断状态的.)
 4.最后将状态更新为INTERRUPTED,并唤醒其他等待结果的线程.
 
-
 #### FutureTask.run()
 if (state != NEW || !UNSAFE.compareAndSwapObject(this, runnerOffset,null, Thread.currentThread())) {return;}
 解释:只有状态为new的任务且cas原子更新runner才有可能执行(考虑到中断因素).
@@ -62,12 +61,21 @@ while (state == INTERRUPTING) Thread.yield();
 解释:因为run先cas更新runner,执行任务后再cas更新state.可能在更新完runner后到开始执行任务这段时间,被调用了cancel.此时任务线程等待interrupter将任务线程标记为中断.
 while循环可以保证run返回后看到的任务状态为终态(INTERRUPTED),而非无意义的瞬时态(INTERRUPTING)
 
-
 #### FutureTask.done()
 FutureTask预留的扩展点,当任务结束(正常/或异常)后回调.
+
 
 ## Callable优于Runnable
 FutureTask内部用的是Callable;Executor也是侧重使用Callable,内部会将Runnable转换为Callable<Void>
 Executors.callable(java.lang.Runnable, T)提供了Runnable转换Callable的工具方法.
 Executors.callable(java.lang.Runnable, T):Returns a Callable object that, when called, runs the given task and returns the given result.
 
+
+## ScheduledFuture
+ScheduledFuture<V> extends Delayed, Future<V>
+Usually a scheduled future is the result of scheduling a task with a ScheduledExecutorService.
+
+## RunnableScheduledFuture
+RunnableScheduledFuture<V> extends RunnableFuture<V>, ScheduledFuture<V>
+A ScheduledFuture that is Runnable. Successful execution of the run method causes completion of the Future and allows access to its results.
+备注:RunnableScheduledFuture是一个task.
