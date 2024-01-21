@@ -79,3 +79,15 @@ Usually a scheduled future is the result of scheduling a task with a ScheduledEx
 RunnableScheduledFuture<V> extends RunnableFuture<V>, ScheduledFuture<V>
 A ScheduledFuture that is Runnable. Successful execution of the run method causes completion of the Future and allows access to its results.
 备注:RunnableScheduledFuture是一个task.
+
+
+## CompletionService
+A service that decouples the production of new asynchronous tasks from the consumption of the results of completed tasks. 
+Producers submit tasks for execution. Consumers take completed tasks and process their results in the order they complete.
+将新异步任务的生成(提交)与已完成任务结果的消费分离。
+生产者提交任务以供执行。消费者获取已完成的任务并按完成顺序处理其结果。
+CompletionService 可以用于管理异步 I/O，其中执行读取操作的任务在程序或系统的某一部分中提交，然后在程序的另一部分中在读取完成时进行处理，可能与请求的顺序不同。通常，CompletionService 依赖于单独的 Executor 来实际执行任务，此时 CompletionService 仅管理内部完成队列。ExecutorCompletionService 类提供了此方法的实现。
+
+## ExecutorCompletionService
+ExecutorCompletionService是CompletionService的重要实现类
+AbstractExecutorService.doInvokeAny方法中有ExecutorCompletionService的用法
