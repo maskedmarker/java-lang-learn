@@ -22,15 +22,16 @@ A Future represents the result of an asynchronous computation.
 因为正常和异常都是被当作执行完成,所以Future.get()必须在非正常执行完成下抛出异常,否则区分执行完成是否是因为异常导致的.
 
 备注:
-1.Future并不是纯粹的the result of an asynchronous computation,还提供了cancel()方法,此方法感觉应该出现在所谓task上.
+1.Future并不是纯粹的the result of an asynchronous computation,还提供了cancel()方法来取消task的执行.
+2.Future.cancel()感觉应该出现在对应的task上.当task被cancel后,Future.get()将抛出CancellationException.
 
 ## RunnableFuture<V>
 RunnableFuture<V> extends Runnable, Future<V>
 javadoc中对RunnableFuture的描述是A Future that is Runnable. Successful execution of the run method causes completion of the Future and allows access to its results.
 我的理解是a Runnable(task) with a Future result.javadoc中只是重点强调了result,而回避了主体Runnable(task)
-Runnable.run()代表了执行过程,Future.get()代表了执行结果.RunnableFuture既有过程又有结果.
+Runnable.run()代表了执行过程,Future.get()代表了执行结果(并未指明是哪个类执行的).RunnableFuture表示的当前类的计算结果(包括计算中的副作用)作为异步计算的结果,而非其他类的计算结果.
 备注:
-1.RunnableFuture首先要当作Runnable看待,其次才是Future
+1.RunnableFuture既要当作Runnable看待,也要当作Future看待.
 2.RunnableFuture接口的一个重要实现类FutureTask
 
 
@@ -69,7 +70,8 @@ FutureTask预留的扩展点,当任务结束(正常/或异常)后回调.
 FutureTask内部用的是Callable;Executor也是侧重使用Callable,内部会将Runnable转换为Callable<Void>
 Executors.callable(java.lang.Runnable, T)提供了Runnable转换Callable的工具方法.
 Executors.callable(java.lang.Runnable, T):Returns a Callable object that, when called, runs the given task and returns the given result.
-
+我们在使用Callable时更看重call方法的返回值,使用Runnable时更看重run方法的副作用(它也没返回值).
+再配合使用Future时,会将Callable.call的返回值作为Future.get的返回值,会将Runnable.run的副作用作为Future.get的返回值(究竟是哪个副作用,比较不明了)
 
 ## ScheduledFuture
 ScheduledFuture<V> extends Delayed, Future<V>
