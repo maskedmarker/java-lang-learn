@@ -8,6 +8,15 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * 注意看javadoc中关于URLConnection的解释说明
+ * URLConnection objects go through two phases: first they are created, then they are connected.
+ * After being created, and before being connected, various options can be specified (e.g., doInput and UseCaches).
+ * After connecting, it is an error to try to set them. Operations that depend on being connected,
+ * like getContentLength, will implicitly perform the connection, if necessary.
+ *
+ *
+ */
 public class URLTest {
 
     /**
@@ -17,7 +26,8 @@ public class URLTest {
     public void test() throws Exception {
         String urlString = "https://example.com";
         URL url = new URL(urlString);
-        // Socket.connect()
+        // A new instance of URLConnection is created every time when invoking openConnection()
+        // It should be noted that a URLConnection instance does not establish the actual network connection on creation
         URLConnection connection = url.openConnection();
         InputStream inputStream = connection.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
