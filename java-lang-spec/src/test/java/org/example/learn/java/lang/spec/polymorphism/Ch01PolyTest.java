@@ -14,20 +14,20 @@ public class Ch01PolyTest {
 
     private static class ClassA{
         public void method1() {
-            System.out.println(this.getClass() + " method1 in ClassA");
+            System.out.println(this.getClass() + " method1 declared in ClassA");
         }
 
         public void method2() {
-            System.out.println(this.getClass() + " method2 in ClassA");
+            System.out.println(this.getClass() + " method2 declared in ClassA");
         }
 
         public void method3() {
-            System.out.println(this.getClass() + " method3 in ClassA");
+            System.out.println(this.getClass() + " method3 declared in ClassA");
             method1();
         }
 
         public void method4() {
-            System.out.println(this.getClass() + " method4 in ClassA");
+            System.out.println(this.getClass() + " method4 declared in ClassA");
             method2();
         }
     }
@@ -38,37 +38,37 @@ public class Ch01PolyTest {
      */
     private static class ClassB extends ClassA {
         public void method1() {
-            System.out.println(this.getClass() + " method1 in ClassB");
+            System.out.println(this.getClass() + " method1 declared in ClassB");
         }
 
         public void method3() {
-            System.out.println(this.getClass() + " method3 in ClassB");
+            System.out.println(this.getClass() + " method3 declared in ClassB");
             method1(); // 法引用指向的是 com.example.learn.bytecode.cglib.Ch04SelfInvocationTest.ClassB.method1
         }
 
         public void method4() {
-            System.out.println(this.getClass() + " method4 in ClassB");
+            System.out.println(this.getClass() + " method4 declared in ClassB");
             method2(); // 方法引用指向的是 com.example.learn.bytecode.cglib.Ch04SelfInvocationTest.ClassA.method2
         }
 
         public void method5() {
-            System.out.println(this.getClass() + " method5 in ClassB");
+            System.out.println(this.getClass() + " method5 declared in ClassB");
             super.method1(); // 方法引用指向的是 com.example.learn.bytecode.cglib.Ch04SelfInvocationTest.ClassA.method1
         }
     }
 
     private static class ClassC extends ClassA {
         public void method1() {
-            System.out.println(this.getClass() + " method1 in ClassC");
+            System.out.println(this.getClass() + " method1 declared in ClassC");
         }
 
         public void method3() {
-            System.out.println(this.getClass() + " method3 in ClassC");
+            System.out.println(this.getClass() + " method3 declared in ClassC");
             super.method3();
         }
 
         public void method4() {
-            System.out.println(this.getClass() + " method4 in ClassC");
+            System.out.println(this.getClass() + " method4 declared in ClassC");
             super.method4();
         }
     }
@@ -86,7 +86,7 @@ public class Ch01PolyTest {
         System.out.println("----------------------------------------------");
 
         ClassC c = new ClassC();
-        c.method3(); // method3 in ClassC  -> method3 in ClassA -> method1 in ClassC
-        c.method4(); // method4 in ClassC -> method4 in ClassA -> method2 in ClassA
+        c.method3(); // method3 declared in ClassC  -> method3 declared in ClassA -> method1 declared in ClassC
+        c.method4(); // method4 declared in ClassC -> method4 declared in ClassA -> method2 declared in ClassA
     }
 }
