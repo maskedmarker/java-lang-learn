@@ -9,6 +9,7 @@ import org.junit.Test;
  * 虚方法表是 Java 虚拟机在加载类的时候创建的一张表，用于存储类的方法信息，包括方法的地址等。
  *
  * 方法的地址的确定: 本类虚表中找不到,再找父类的虚表.
+ * 具体的执行过程参考jvm指令集中的invokevirtual
  */
 public class Ch01PolyTest {
 
