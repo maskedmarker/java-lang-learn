@@ -2,6 +2,7 @@ package org.example.learn.java.io.network.http;
 
 import org.junit.Test;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -10,13 +11,14 @@ import java.util.Map;
 public class HttpHeaderTest {
 
     /**
-     * TODO 只能获得部分的http header
+     * 只能获得部分的http header???
+     * 获取到的是全部的header.因为用java调用时,server返回的header确实比较少.
      */
     @Test
     public void testHeaders() throws Exception {
         String urlString = "https://www.baidu.com/";
         URL url = new URL(urlString);
-        URLConnection connection = url.openConnection();
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         Map<String, List<String>> headerFields = connection.getHeaderFields();
         for (Map.Entry<String, List<String>> headerItem : headerFields.entrySet()) {
             String headerName = headerItem.getKey();
