@@ -1,4 +1,4 @@
-package org.example.learn.java.lang.spec.lambda;
+package org.example.learn.java.lambda;
 
 import org.junit.Test;
 
